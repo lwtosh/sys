@@ -17,7 +17,7 @@
         header-align="center"
         align="center"
         width="150"
-        label="接入平台名称">
+        label="商户名称">
       </el-table-column>
       <el-table-column
         prop="accTypeName"

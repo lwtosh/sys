@@ -2,8 +2,8 @@
 <template>
   <div class="mod-user">
     <el-form :inline="true" :model="dataForm" ref="dataForm" class="demo-form-inline" @keyup.enter.native="getDataList()">
-      <el-form-item label="接入编码">
-        <el-input v-model="dataForm.accessCode" placeholder="接入编码" clearable></el-input>
+      <el-form-item label="商户编码">
+        <el-input v-model="dataForm.accessCode" placeholder="商户编码" clearable></el-input>
       </el-form-item>
       <el-form-item label="联系人手机号">
         <el-input v-model="dataForm.telphone" placeholder="联系人手机号" clearable></el-input>
@@ -19,10 +19,10 @@
     <el-form-item>
           <el-button  type="text"  @click="addConfigKey(id)">配置密钥</el-button>
           <el-button  type="text" @click="addAudit(id)">审核</el-button>
-          <el-button  type="text" @click="addBind(id)">绑定商户</el-button>
+          <el-button  type="text" @click="addBind(id)">绑定应用</el-button>
           <el-button  type="text"  @click="addExamine(id)">查看</el-button>
           <el-button  type="text"  @click="addFundsPwd(id)">设置资金密码</el-button>
-          <el-button  type="text"  @click="addOrUpdateHandle(id)">修改</el-button>
+          <el-button  type="text"   @click="addOrUpdateHandle(id)">修改</el-button>
           <el-button type="text"  @click="deleteHandle(id)">删除</el-button>
       </el-form-item>
     </el-form>
@@ -42,47 +42,49 @@
         prop="platformName"
         header-align="center"
         align="center"
-        label="平台名称">
+        width="180"
+        label="商户名称">
       </el-table-column>
       <el-table-column
         prop="accessCode"
         header-align="center"
         align="center"
-        label="接入编码">
+        width="120"
+        label="商户编码">
       </el-table-column>
       <el-table-column
         prop="telphone"
         header-align="center"
         align="center"
-  
+        width="150"
         label="联系人手机号">
       </el-table-column>
       <el-table-column
         prop="startTime"
         header-align="center"
         align="center"
-   
+         width="180"
         label="签约开始日期">
       </el-table-column>
       <el-table-column
         prop="endTime"
         header-align="center"
         align="center"
-    
+        width="180"
         label="签约结束日期">
       </el-table-column>
       <el-table-column
         prop="licenseNo"
         header-align="center"
         align="center"
-     
+       width="180"
         label="营业执照号码">
       </el-table-column>
       <el-table-column
         prop="createTime"
         header-align="center"
         align="center"
-
+        width="180"
         label="创建时间">
       </el-table-column>
     </el-table>

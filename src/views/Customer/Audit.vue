@@ -4,7 +4,7 @@
     :visible.sync="visible">
    <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
     <el-form-item label="平台名称" prop="platformName" style="width:60%;">
-    <el-input  v-model="dataForm.platformName"></el-input>
+   {{dataForm.platformName}}
   </el-form-item>
   <el-form-item label="审核状态">
     <el-radio-group v-model="dataForm.status">
@@ -57,7 +57,6 @@ export default {
     dataFormSubmit () {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log(this.dataForm)
           this.$http({
             url: this.$http.adornUrl(`/m/accessPlatform/auditor/${this.dataForm.id}`),
             method: 'post',

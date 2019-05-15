@@ -15,10 +15,10 @@
      
       <div class="box">
       <el-form-item
-        label="接入代码"> {{this.dataForm.accessCode}}
+        label="商户代码"> {{this.dataForm.accessCode}}
       </el-form-item>
         <el-form-item
-        label="平台名称"
+        label="商户名称"
         prop="platformName"
          label-width="320px">
       {{this.dataForm.platformName}}
@@ -111,7 +111,7 @@
     </el-form>
     <funds v-if="FundsPwdVisible" ref="funds" @refreshDataList="getDataList"></funds>
     </div>
-    <div v-else>不好意思，你还不是平台用户 </div>
+    <div v-else>不好意思，您还不是平台用户哦！ </div>
 </template>
 
 <script>
@@ -175,7 +175,6 @@ export default {
         url: this.$http.adornUrl('/m/user/meInfo'),
         method: 'get'
       }).then(({ data }) => {
-        // if (data && data.code === '200') {
         this.accessPlatformId = data.res.data.accessPlatformId
         this.$http({
           url: this.$http.adornUrl('/m/accessPlatform/meInfo/' + this.accessPlatformId),

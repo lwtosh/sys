@@ -1,8 +1,8 @@
 <template>
   <div class="mod-user">
     <el-form :inline="true" :model="dataForm" ref="dataForm" class="demo-form-inline" @keyup.enter.native="getDataList()">
-      <el-form-item label="接入平台名称">
-        <el-select v-model="dataForm.platformName" class="input-width" placeholder="全部" clearable>
+      <el-form-item label="商户名称">
+        <el-select v-model="dataForm.platformName" :disabled='isActive' class="input-width" placeholder="全部" clearable>
         <el-option v-for="item in dataList1"
             :key="item.id"
             :label="item.platformName"
@@ -14,11 +14,13 @@
        <el-date-picker
       v-model="dataForm.time"
       type="daterange"
+      minView="month"
       format="yyyy 年 MM 月 dd 日"
       value-format="yyyy-MM-dd"
       range-separator="至"
       start-placeholder="开始日期"
-      end-placeholder="结束日期">
+      end-placeholder="结束日期"
+      :picker-options="pickerOptionsStart">
     </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -34,7 +36,7 @@
         prop="platformName"
         header-align="center"
         align="center"
-        label="接入平台名称">
+        label="商户名称">
       </el-table-column>
       <el-table-column
         prop="countBalance"
@@ -102,7 +104,16 @@
        totalPage: 0,
        dataListLoading: false,
        addwalletVisible: false,
-       dataListSelections: []
+       dataListSelections: [],
+       isActive: false,
+       pickerOptionsStart: {
+         disabledDate (time) {
+           let curDate = (new Date()).getTime()
+           let three = 29 * 24 * 3600 * 1000
+           let threeMonths = curDate - three
+           return time.getTime() < Date.now() - 8.64e7 || time.getTime() < threeMonths
+         }
+       }
      }
    },
    components: {
@@ -116,10 +127,24 @@
      getDataList () {
        this.dataListLoading = true
        this.$http({
-         url: this.$http.adornUrl('/m/selectAccessPlatforms'),
+         url: this.$http.adornUrl('/m/user/meInfo'),
          method: 'get'
        }).then(({data}) => {
-         this.$set(this, 'dataList1', data.res.data)
+         this.accessPlatformId = data.res.data.accessPlatformId
+         this.$http({
+           url: this.$http.adornUrl('/m/selectAccessPlatforms'),
+           method: 'get'
+         }).then(({data}) => {
+           this.$set(this, 'dataList1', data.res.data)
+           this.accessPlatformId1 = data.res.data.id
+           for (var i = 0; i < this.dataList1.length; i++) {
+             this.accessPlatformId1 = this.dataList1[i].id
+             if (this.accessPlatformId !== '' && this.accessPlatformId === this.accessPlatformId1) {
+               this.dataForm.platformName = this.dataList1[i].platformName
+               this.isActive = true
+             }
+           }
+         })
        })
        this.$http({
          url: this.$http.adornUrl('/m/accessPlatform/walletPage'),

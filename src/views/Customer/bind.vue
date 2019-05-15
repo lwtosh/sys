@@ -26,7 +26,7 @@
     </el-table-column>
     <el-table-column
       prop="rate"
-      label="结算费率"
+      label="结算费率(%)"
       show-overflow-tooltip>
     </el-table-column>
     
@@ -111,7 +111,6 @@ export default {
       })
     },
     openDetails (rows) {
-      console.log(rows.id)
     },
     handleSelectionChange (val) {
       this.multipleSelection = val

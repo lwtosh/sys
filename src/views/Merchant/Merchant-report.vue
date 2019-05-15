@@ -1,7 +1,7 @@
 <template>
   <div class="mod-user">
     <el-form :inline="true" :model="dataForm" ref="dataForm" class="demo-form-inline" @keyup.enter.native="getDataList()">
-      <el-form-item label="平台商户名称">
+      <el-form-item label="应用名称">
         <el-select v-model="dataForm.name" class="input-width" placeholder="全部" clearable>
         <el-option v-for="item in dataList1"
             :key="item.id"
@@ -18,7 +18,8 @@
       value-format="yyyy-MM-dd"
       range-separator="至"
       start-placeholder="开始日期"
-      end-placeholder="结束日期">
+      end-placeholder="结束日期"
+      :picker-options="pickerOptionsStart">
       </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -34,7 +35,7 @@
         prop="merchantName"
         header-align="center"
         align="center"
-        label="平台商户名称">
+        label="应用名称">
       </el-table-column>
       <el-table-column
         prop="countBalance"
@@ -102,7 +103,15 @@ export default {
       totalPage: 0,
       addwalletVisible: false,
       dataListLoading: false,
-      dataListSelections: []
+      dataListSelections: [],
+      pickerOptionsStart: {
+        disabledDate (time) {
+          let curDate = (new Date()).getTime()
+          let three = 29 * 24 * 3600 * 1000
+          let threeMonths = curDate - three
+          return time.getTime() < Date.now() - 8.64e7 || time.getTime() < threeMonths
+        }
+      }
     }
   },
   components: {

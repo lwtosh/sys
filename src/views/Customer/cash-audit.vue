@@ -3,9 +3,9 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
    <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <!-- <el-form-item label="平台名称" prop="accessPlatformName" style="width:60%;">
-    {{this.accessPlatformName}}
-  </el-form-item> -->
+    <el-form-item label="商户名称" prop="accessPlatformName" style="width:60%;">
+    {{this.dataForm.accessPlatformName}}
+  </el-form-item>
   <el-form-item label="审核状态">
     <el-radio-group v-model="dataForm.status">
       <el-radio label="2"  :value="2">{{mes}}</el-radio>
@@ -31,6 +31,7 @@ export default {
       mes: '通过',
       mes2: '不通过',
       dataForm: {
+        accessPlatformName: '',
         accessPlatformCashId: '',
         remark: '',
         status: ''
@@ -57,7 +58,6 @@ export default {
     dataFormSubmit () {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log(this.dataForm)
           this.$http({
             url: this.$http.adornUrl(`/m/accessPlatformCash/examine`),
             method: 'post',

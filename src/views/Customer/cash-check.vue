@@ -9,7 +9,7 @@
       @keyup.enter.native="dataFormSubmit()"
       label-width="120px">
       <el-form-item
-        label="平台名称"
+        label="商户名称"
         style="width:50%;">
       {{this.dataForm.accessPlatformName}}
       </el-form-item>
@@ -62,7 +62,7 @@
         label="银行卡所在市"
         prop="urban"
         >
-        {{this.dataForm.urbanName}}
+        {{this.dataForm.urban}}
       </el-form-item>
       </div>
      <div class="box">
@@ -140,6 +140,7 @@ export default {
           method: 'get',
           params: this.$http.adornParams()
         }).then(res => {
+          console.log(res)
           this.$set(this, 'dataForm', res.data.res.data)
           if (!res.data.res.data.ids) {
             this.$set(this.dataForm, 'ids', [])

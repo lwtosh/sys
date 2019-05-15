@@ -16,11 +16,11 @@
       </div>
       
       <el-form-item
-        label="接入代码"> {{this.dataForm.accessCode}}
+        label="商户代码"> {{this.dataForm.accessCode}}
       </el-form-item>
       <div class="box">
         <el-form-item
-        label="平台名称"
+        label="商户名称"
         prop="platformName"
         style="width:50%;">
       {{this.dataForm.platformName}}
@@ -73,12 +73,12 @@
         label="身份证正面"
         prop="nickPositive" 
         style="width:50%;">
-        <img :src="this.dataForm.nickPositive" alt="">
+        <img class="img" :src="this.dataForm.nickPositive" alt="">
       </el-form-item>
       <el-form-item
         label="身份证反面"
         prop="nickUnpositive" >
-        <img :src="this.dataForm.nickUnpositive" alt="">
+        <img class="img" :src="this.dataForm.nickUnpositive" alt="">
       </el-form-item>
       </div>
       <el-form-item
@@ -89,7 +89,7 @@
       <el-form-item
         label="营业执照照片"
         prop="licenseUrl" >
-        <img :src="this.dataForm.licenseUrl" alt="">
+        <img class="img" :src="this.dataForm.licenseUrl" alt="">
       </el-form-item>
       <el-form-item
         label="角色"
@@ -198,7 +198,9 @@ export default {
 </script>
 
 <style >
-
+.img{
+  width: 150px;
+}
 .box{
   width: 100%;
   display: flex;

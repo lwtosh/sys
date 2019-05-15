@@ -2,8 +2,8 @@
   <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType">
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="site-navbar__brand-lg" href="javascript:;">首页</a>
-        <a class="site-navbar__brand-mini" href="javascript:;">首页</a>
+        <a class="site-navbar__brand-lg" href="javascript:;"><icon-svg name="daohang"></icon-svg></a>
+        <a class="site-navbar__brand-mini" href="javascript:;"><icon-svg name="daohang"></icon-svg></a>
       </h1>
     </div>
     <div class="site-navbar__body clearfix">
@@ -87,3 +87,16 @@
     }
   }
 </script>
+
+<style>
+/* .site-navbar{
+  background: #334157;
+}
+.home{
+  color: #fff;
+  display: inline-block;
+}
+.site-navbar--inverse .el-menu > .el-menu-item:focus, .site-navbar--inverse .el-menu > .el-menu-item:hover, .site-navbar--inverse .el-menu > .el-submenu > .el-submenu__title:focus, .site-navbar--inverse .el-menu > .el-submenu > .el-submenu__title:hover {
+  background: #334157;
+} */
+</style>

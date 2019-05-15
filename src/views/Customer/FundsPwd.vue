@@ -51,7 +51,7 @@ export default {
         subPwd: ''
       },
       dataRule: {
-        userPwd: [
+        passWord: [
            { required: true, validator: validatePassword, trigger: 'blur' }
         ],
         subPwd: [

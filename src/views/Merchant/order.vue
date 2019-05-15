@@ -1,16 +1,17 @@
 <template>
   <div class="mod-user">
     <el-form :inline="true" :model="dataForm" ref="dataForm" class="demo-form-inline" @keyup.enter.native="getDataList()">
-    <el-form-item label="接入平台">
-      <el-select v-model="dataForm.platformName" class="input-width" placeholder="全部" clearable>
+    <el-form-item label="商户名称">
+      <el-select  v-model="dataForm.platformName" :disabled='isActive' class="input-width" placeholder="全部" clearable>
         <el-option v-for="item in dataList2"
             :key="item.id"
             :label="item.platformName"
-            :value="item.id">
+            :value="item.id"
+            >
           </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="商户平台">
+    <el-form-item label="应用平台">
           <el-select v-model="dataForm.name" class="input-width" placeholder="全部" clearable>
            <el-option v-for="item in dataList3"
             :key="item.id"
@@ -40,14 +41,14 @@
         header-align="center"
         align="center"
         width="180"
-        label="接入平台">
+        label="商户平台">
       </el-table-column>
       <el-table-column
         prop="merchantName"
         header-align="center"
         align="center"
         width="180"
-        label="商户平台">
+        label="应用平台">
       </el-table-column>
       <el-table-column
         prop="orderNo"
@@ -74,26 +75,28 @@
         prop="totalFee"
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="订单总金额">
       </el-table-column>
       <el-table-column
         prop="settlementFee"
         header-align="center"
         align="center"
+        width="120"
         label="结算金额">
       </el-table-column>
       <el-table-column
         prop="chargeFee"
         header-align="center"
         align="center"
+        width="120"
         label="手续费">
       </el-table-column>
       <el-table-column
         prop="status"
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="订单状态">
          <template slot-scope="scope">
           <el-tag v-if="scope.row.status === '1'" size="small" >待支付</el-tag>
@@ -106,7 +109,7 @@
         prop="settlementStatus "
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="结算状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.settlementStatus === '1'" size="small" >未结算</el-tag>
@@ -161,9 +164,11 @@
           orderNo: ''
         },
         accessPlatformId: '',
+        accessPlatformId1: '',
         dataList: [],
         dataList2: [],
         dataList3: [],
+        isActive: false,
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
@@ -180,16 +185,31 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
+          url: this.$http.adornUrl('/m/user/meInfo'),
+          method: 'get'
+        }).then(({data}) => {
+          this.accessPlatformId = data.res.data.accessPlatformId
+          this.$http({
+            url: this.$http.adornUrl('/m/selectAccessPlatforms'),
+            method: 'get'
+          }).then(({data}) => {
+            this.$set(this, 'dataList2', data.res.data)
+            this.accessPlatformId1 = data.res.data.id
+            for (var i = 0; i < this.dataList2.length; i++) {
+              this.accessPlatformId1 = this.dataList2[i].id
+              if (this.accessPlatformId !== '' && this.accessPlatformId === this.accessPlatformId1) {
+                this.dataForm.platformName = this.dataList2[i].platformName
+                this.isActive = true
+              }
+            }
+          })
+        })
+        // 应用平台下拉框
+        this.$http({
           url: this.$http.adornUrl('/m/selectMerchants'),
           method: 'get'
         }).then(({data}) => {
           this.$set(this, 'dataList3', data.res.data)
-        })
-        this.$http({
-          url: this.$http.adornUrl('/m/selectAccessPlatforms'),
-          method: 'get'
-        }).then(({data}) => {
-          this.$set(this, 'dataList2', data.res.data)
         })
         this.$http({
           url: this.$http.adornUrl('/m/order/page'),
@@ -229,7 +249,6 @@
       // 重置
       resetForm (dataForm) {
         this.dataForm = Object.assign({}, dataForm)
-        // this.$refs[dataForm].resetFields()
       }
   
     }

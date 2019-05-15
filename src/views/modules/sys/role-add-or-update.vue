@@ -47,7 +47,6 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import { treeDataTranslate } from '@/utils'
-// import { constants } from 'fs'
 export default {
   data () {
     return {

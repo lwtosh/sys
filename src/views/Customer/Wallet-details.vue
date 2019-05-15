@@ -72,9 +72,6 @@
         width="180"
         label="结算时间">
       </el-table-column>
-    
-      
-      
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
@@ -102,7 +99,6 @@
         },
         accessPlatformId: '',
         dataList: [],
-        // dataList1: [],
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
@@ -134,7 +130,6 @@
           })
         }).then(({ data }) => {
           if (data && data.code === '200') {
-            console.log(data)
             this.dataList = data.res.data.records
             this.totalPage = data.res.data.total
           } else {

@@ -26,36 +26,45 @@
         prop="name"
         header-align="center"
         align="center"
+        width="220"
         label="应用名称">
       </el-table-column>
       <el-table-column
         prop="payCompanyKeyName"
         header-align="center"
         align="center"
+        width="200"
         label="支付公司">
       </el-table-column>
       <el-table-column
         prop="rate"
         header-align="center"
         align="center"
-        label="结算费率">
+        width="180"
+        label="结算费率(%)">
+        <template slot-scope="scope">
+          {{scope.row.rate}}
+        </template>
       </el-table-column>
       <el-table-column
         prop="startNum"
         header-align="center"
         align="center"
+        width="200"
         label="支付起始金额">
       </el-table-column>
       <el-table-column
         prop="endNum"
         header-align="center"
         align="center"
+        width="200"
         label="支付终止金额">
       </el-table-column>
       <el-table-column
         prop="status"
         header-align="center"
         align="center"
+        width="150"
         label="状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 2" size="small" type="danger">停用</el-tag>
@@ -66,7 +75,7 @@
         prop="createTime"
         header-align="center"
         align="center"
-        width="180"
+        width="200"
         label="创建时间">
       </el-table-column>
       <el-table-column

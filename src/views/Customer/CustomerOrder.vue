@@ -1,8 +1,8 @@
 <template>
   <div class="mod-user">
     <el-form :inline="true" :model="dataForm" ref="dataForm" class="demo-form-inline" @keyup.enter.native="getDataList()">
-      <el-form-item label="接入平台">
-      <el-select v-model="dataForm.platformName" class="input-width" placeholder="全部" clearable>
+      <el-form-item label="商户名称">
+      <el-select v-model="dataForm.platformName" :disabled='isActive' class="input-width" placeholder="全部" clearable>
         <el-option v-for="item in dataList2"
             :key="item.id"
             :label="item.platformName"
@@ -25,18 +25,12 @@
       :data="dataList"
       border
       v-loading="dataListLoading">
-      <!-- <el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column> -->
       <el-table-column
         prop="accessPlatformName"
         header-align="center"
         align="center"
         width="180"
-        label="接入平台">
+        label="商户平台">
       </el-table-column>
       <el-table-column
         prop="orderNo"
@@ -63,19 +57,21 @@
         prop="totalFee"
         header-align="center"
         align="center"
-        width="100"
+        width="120"
         label="订单总金额">
       </el-table-column>
       <el-table-column
         prop="settlementFee"
         header-align="center"
         align="center"
+        width="120"
         label="结算金额">
       </el-table-column>
       <el-table-column
         prop="chargeFee"
         header-align="center"
         align="center"
+        width="120"
         label="手续费">
       </el-table-column>
       <el-table-column
@@ -150,6 +146,7 @@
         accessPlatformId: '',
         dataList: [],
         dataList2: [],
+        isActive: false,
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
@@ -166,10 +163,24 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/m/selectAccessPlatforms'),
+          url: this.$http.adornUrl('/m/user/meInfo'),
           method: 'get'
         }).then(({data}) => {
-          this.$set(this, 'dataList2', data.res.data)
+          this.accessPlatformId = data.res.data.accessPlatformId
+          this.$http({
+            url: this.$http.adornUrl('/m/selectAccessPlatforms'),
+            method: 'get'
+          }).then(({data}) => {
+            this.$set(this, 'dataList2', data.res.data)
+            this.accessPlatformId1 = data.res.data.id
+            for (var i = 0; i < this.dataList2.length; i++) {
+              this.accessPlatformId1 = this.dataList2[i].id
+              if (this.accessPlatformId !== '' && this.accessPlatformId === this.accessPlatformId1) {
+                this.dataForm.platformName = this.dataList2[i].platformName
+                this.isActive = true
+              }
+            }
+          })
         })
         this.$http({
           url: this.$http.adornUrl('/m/user/meInfo'),

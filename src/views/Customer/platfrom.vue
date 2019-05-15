@@ -16,23 +16,24 @@
       </el-form-item>
       <div class="box">
         <el-form-item
-        label="接入代码"
+        label="商户代码"
         prop="accessCode">
-      <el-input v-model="dataForm.accessCode" placeholder="接入代码">
+      <el-input v-model="dataForm.accessCode" placeholder="商户代码">
       </el-input>
       </el-form-item>
       <el-form-item
         label="密码"
-        prop="passWord">
+        prop="passWord"
+        v-if="dataForm.id === ''">
       <el-input type="password" v-model="dataForm.passWord" placeholder="密码">
       </el-input>
       </el-form-item>
       </div>
       <div class="box">
         <el-form-item
-        label="平台名称"
+        label="商户名称"
         prop="platformName">
-      <el-input v-model="dataForm.platformName" placeholder="平台名称">
+      <el-input v-model="dataForm.platformName" placeholder="商户名称">
       </el-input>
       </el-form-item>
 
@@ -44,14 +45,21 @@
       </el-form-item>
       </div>
       <el-form-item label="签约日期"  prop="time" >
-      <el-date-picker   v-model="dataForm.startTime" type="date" placeholder="开始日期"> </el-date-picker>
+        <div class="box">
+          <el-form-item prop="startTime">
+           <el-date-picker v-model="dataForm.startTime" type="date" placeholder="开始日期" :picker-options="pickerOptionsStart"  @change="changeEnd"> </el-date-picker>
+        </el-form-item>
       <span> ~ </span>
-      <el-date-picker  v-model="dataForm.endTime" type="date" placeholder="结束日期"> </el-date-picker>
+      <el-form-item prop="endTime">
+       <el-date-picker v-model="dataForm.endTime" type="date" placeholder="结束日期" :picker-options="pickerOptionsEnd" @change="changeStart"> </el-date-picker> 
+      </el-form-item>
+        </div>
+        
      </el-form-item>
       <el-form-item
         label="每日支付限额"
         prop="dayMoney" >
-      <el-input style="width:20%;" v-model="dataForm.dayMoney" placeholder="每日支付限额"> </el-input>
+      <el-input style="width:20%;" v-model.number="dataForm.dayMoney" placeholder="支付限额"> </el-input>
       <span>  元</span>
       </el-form-item>
       <hr>
@@ -167,11 +175,26 @@
 
 <script>
 import { isMobile } from '@/utils/validate'
+var validateMonery = (rule, value, callback) => {
+  let reg1 = /^[1-9]{1,8}$/
+  if (reg1.test(value)) {
+    callback()
+  } else {
+    callback(new Error('支付金额输入有误'))
+  }
+}
 export default {
   data () {
     var validateMobile = (rule, value, callback) => {
-      if (!isMobile(value)) {
+      if (isMobile(value)) {
+        callback()
+      } else {
         callback(new Error('手机号格式错误'))
+      }
+    }
+    var validateName = (rule, value, callback) => {
+      if (!(value.length <= 30)) {
+        callback(new Error('格式错误'))
       } else {
         callback()
       }
@@ -205,13 +228,16 @@ export default {
       dataRule: {
         telphone: [
           { required: true, message: '手机号不能为空', trigger: 'blur' },
-          { validator: validateMobile, trigger: 'blur' }
+          { validator: validateMobile, trigger: 'blur' },
+          {min: 8, max: 11, message: '手机号输入有误'}
         ],
         accessCode: [
-          { required: true, message: '接入代码不能为空', trigger: 'blur' }
+          { required: true, message: '接入代码不能为空', trigger: 'blur' },
+          { validator: validateName, trigger: 'blur' }
         ],
         nickName: [
-          { required: true, message: '法人名称不能为空', trigger: 'blur' }
+          { required: true, message: '法人名称不能为空', trigger: 'blur' },
+          { validator: validateName }
         ],
         nickPositive: [
           { required: true, message: '身份证必传', trigger: 'blur' }
@@ -220,28 +246,43 @@ export default {
           { required: true, message: '身份证必传', trigger: 'blur' }
         ],
         nickNo: [
-          { required: true, message: '身份证号码不能为空', trigger: 'blur' }
+          { required: true, message: '身份证号码不能为空', trigger: 'blur' },
+          {min: 15, max: 18, message: '身份证号码输入有误'}
         ],
         passWord: [
-          { required: true, message: '密码不能为空', trigger: 'blur' }
+          { required: true, message: '密码不能为空', trigger: 'blur' },
+          {min: 6, max: 20}
         ],
         platformName: [
-          { required: true, message: '平台名称不能为空', trigger: 'blur' }
+          { required: true, message: '平台名称不能为空', trigger: 'blur' },
+          { validator: validateName, trigger: 'blur' }
         ],
         licenseNo: [
-          { required: true, message: '营业执照号码不能为空', trigger: 'blur' }
+          { required: true, message: '营业执照号码不能为空', trigger: 'blur' },
+          {min: 15, max: 18, message: '营业执照号码输入有误'}
         ],
         licenseUrl: [
           { required: true, message: '营业执照必传', trigger: 'blur' }
         ],
         dayMoney: [
-          { required: true, message: '每日支付限额不能为空', trigger: 'blur' }
+          { required: true, message: '每日支付限额不能为空', trigger: 'blur' },
+          {validator: validateMonery, min: 1, max: 9}
         ],
         phone: [
           { required: true, message: '手机号不能为空', trigger: 'blur' },
-          { validator: validateMobile, trigger: 'blur' }
+          { validator: validateMobile, trigger: 'blur' },
+          {min: 8, max: 11, message: '手机号输入有误'}
         ]
-      }
+        // time: [
+        //   { required: true, message: '签约日期不能为空', trigger: 'blur' }
+        // ]
+      },
+      pickerOptionsStart: {
+        disabledDate (time) {
+          return time.getTime() < new Date(new Date().toLocaleDateString()).getTime()
+        }
+      },
+      pickerOptionsEnd: {}
     }
   },
   methods: {
@@ -304,7 +345,6 @@ export default {
       // eslint-disable-next-line no-redeclare
       var file = formData
       this.axios.post('/file/upload', file).then((res) => {
-        console.log(res)
         if (res.data.code === '200') {
           this.$message({
             message: '上传成功',
@@ -332,7 +372,6 @@ export default {
       // eslint-disable-next-line no-redeclare
       var file = formData
       this.axios.post('/file/upload', file).then((res) => {
-        console.log(res)
         if (res.data.code === '200') {
           this.$message({
             message: '上传成功',
@@ -399,6 +438,27 @@ export default {
         phone: '',
         roleIdList: [],
         status: 1
+      })
+    },
+          // 结束时间限制开始时间
+    changeStart () {
+      this.pickerOptionsStart = Object.assign({}, this.pickerOptionsStart, {
+          // 可通过箭头函数的方式访问到this
+        disabledDate: (time) => {
+          var times = ''
+          times = this.dataForm.endTime < time.getTime() || time.getTime() < new Date(new Date().toLocaleDateString())
+              .getTime()
+
+          return times
+        }
+      })
+    },
+      // 开始时间 控制结束时间
+    changeEnd () {
+      this.pickerOptionsEnd = Object.assign({}, this.pickerOptionsEnd, {
+        disabledDate: (time) => {
+          return time.getTime() < this.dataForm.startTime
+        }
       })
     }
   }

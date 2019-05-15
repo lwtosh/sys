@@ -76,17 +76,12 @@
         this.$http({
           url: this.$http.adornUrl('/m/user/meInfo'),
           method: 'get',
-          // headers: {
-          //   'token': window.localStorage['token']
-          // },
           params: this.$http.adornParams()
         }).then(({data}) => {
           if (data && data.code === '200') {
-            // this.$store.commit('set_token', data['Authentication-Token'])
             this.loading = false
             this.accessPlatformId = data.res.data.accessPlatformId
             this.userName = data.res.data.userName
-            console.log(this.accessPlatformId)
           }
         })
       }

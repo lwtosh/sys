@@ -89,6 +89,10 @@
             label="普通用户"
             :value="2"
           ></el-option>
+          <el-option
+            label="第四方用户"
+            :value="3"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item
@@ -163,7 +167,7 @@ export default {
       },
       dataRule: {
         userName: [
-          { required: true, message: '用户名不能为空', trigger: 'blur' }
+           { required: true, message: '用户类型不能为空', trigger: 'blur' }
         ],
         userPwd: [
           { required: true, validator: validatePassword, trigger: 'blur' }
@@ -177,6 +181,9 @@ export default {
         ],
         userType: [
           { required: true, message: '用户类型不能为空', trigger: 'change' }
+        ],
+        userCode: [
+          { required: true, message: '登录账户不能为空', trigger: '' }
         ]
       }
     }

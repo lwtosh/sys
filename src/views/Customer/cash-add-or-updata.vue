@@ -13,7 +13,7 @@
       label-width="120px">
       <el-form-item
         prop="accessPlatformId"
-        label="平台名称"
+        label="商户名称"
         style="width:50%;">
       <el-select @change="handleChange2" v-model="dataForm.accessPlatformId" class="input-width" placeholder="全部" clearable>
         <el-option v-for="item in dataList2"
@@ -92,7 +92,7 @@
         <el-select v-model="dataForm.urban" class="input-width" placeholder="全部" clearable>
         <el-option v-for="item in dataList4" 
             :key="item.id"
-            :label="item.value"
+            :label="item.name"
             :value="item.id">
           </el-option>
       </el-select>
@@ -169,6 +169,14 @@ export default {
         callback()
       }
     }
+    var validateFree = (rule, value, callback) => {
+      let reg = /^[0-9]{1,6}$/
+      if (reg.test(value)) {
+        callback()
+      } else {
+        callback(new Error('金额只能为正整数且小于六位数'))
+      }
+    }
     return {
       visible: false,
       dataList2: [],
@@ -214,7 +222,8 @@ export default {
           { required: true, message: '请选择账户类型', trigger: 'blur' }
         ],
         cardNo: [
-          { required: true, message: '证件号码不能为空', trigger: 'blur' }
+          { required: true, message: '证件号码不能为空', trigger: 'blur' },
+          {min: 18, max: 18}
         ],
         cardType: [
           { required: true, message: '请选择证件类型', trigger: 'blur' }
@@ -223,7 +232,8 @@ export default {
           { required: true, message: '请选择银行类型', trigger: 'blur' }
         ],
         bankNo: [
-          { required: true, message: '银行卡号不能为空', trigger: 'blur' }
+          { required: true, message: '银行卡号不能为空', trigger: 'blur' },
+          {min: 15, max: 21}
         ],
         bankName: [
           { required: true, message: '账户名称不能为空', trigger: 'blur' }
@@ -235,16 +245,19 @@ export default {
           { required: true, message: '请选择开户行', trigger: 'blur' }
         ],
         bankAddress: [
-          { required: true, message: '请填写地址', trigger: 'blur' }
+          { required: true, message: '请填写地址', trigger: 'blur' },
+          {min: 6, max: 50}
         ],
         withdrawalFee: [
-          { required: true, message: '可提金额不能为空', trigger: 'blur' }
+          { required: true, message: '可提金额不能为空', trigger: 'blur' },
+          {min: 1, max: 6, validator: validateFree}
         ],
         urban: [
           { required: true, message: '请选择市', trigger: 'blur' }
         ],
         capitalPassWord: [
-          { required: true, message: '请填写资金密码', trigger: 'blur' }
+          { required: true, message: '请填写资金密码', trigger: 'blur' },
+          {min: 2, max: 20}
         ]
       }
     }

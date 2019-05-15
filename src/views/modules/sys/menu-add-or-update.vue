@@ -7,13 +7,12 @@
       <el-form-item label="菜单名称" prop="resourceName">
         <el-input v-model="dataForm.resourceName" placeholder="请输入菜单名称"></el-input>
       </el-form-item>
-      <el-form-item  label="菜单地址" prop="resourceUrl">
+      <el-form-item   label="菜单地址" prop="resourceUrl">
         <el-input v-model="dataForm.resourceUrl" placeholder="菜单地址"></el-input>
       </el-form-item>
-      <el-form-item label="是否父级" prop="type">
+      <el-form-item  label="是否父级" prop="type">
       <el-radio-group v-model="dataForm.type">
       <el-radio v-for="(type, index) in dataForm.typeList" :label="index" :key="index">{{ type }}</el-radio>
-      <!-- <el-radio label="否"></el-radio> -->
       </el-radio-group>
      </el-form-item>
       <el-form-item v-if="dataForm.type === 1" label="父级菜单" prop="parentId">
@@ -72,7 +71,7 @@
       return {
         visible: false,
         dataForm: {
-          id: 0,
+          id: '',
           type: 1,
           typeList: ['是', '否'],
           resourceName: '',

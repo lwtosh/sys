@@ -6,8 +6,6 @@
     <el-form-item label="应用名称：" prop="name">
         {{dataForm.name}}
     </el-form-item>
-    <!-- <el-form-item
-   > -->
         <table border="0"  style="width:100%" >
 				<thead>
 					<tr>
@@ -17,19 +15,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(merchantCommodities, index) in dataForm.merchantCommodities" :key="merchantCommodities.key">
-						<td><el-input v-model="merchantCommodities.name" placeholder="商品名称"></el-input></td>
-            <td><el-input v-model="merchantCommodities.money" placeholder="金额"></el-input></td>
-						<td><el-input  v-model="merchantCommodities.mdesc" placeholder="描述"></el-input></td>
+					<tr v-for="(merchantCommodities, index) in dataForm.merchantCommodities" :key="merchantCommodities.key"
+          :prop="'merchantConfigs.' + index + '.value'"
+    :rules="{
+      required: true, message: '参数信息', trigger: 'blur'
+    }">
+						<td><el-input v-model="merchantCommodities.name" required  placeholder="商品名称"></el-input></td>
+            <td><el-input v-model.number="merchantCommodities.money" placeholder="金额"></el-input></td>
+						<td><el-input  v-model="merchantCommodities.mdesc" placeholder="描述"> </el-input></td>
             	<i @click="addDomain" class="el-icon-circle-plus re r"></i>
              <i v-if="index !== 0" @click.prevent="removeDomain(merchantCommodities)" class="el-icon-remove re"></i>
 					</tr>
 				</tbody>
 			</table>
-    <!-- </el-form-item> -->
- </el-form>
- 
-			
+ </el-form>	
   <div style="margin-top: 20px;text-align: center;">
       <el-button @click="visible = false">取消</el-button>
       <el-button type="primary" @click="dataFormSubmit()">提交</el-button>
@@ -48,9 +47,6 @@ export default {
         merchantCommodities: [{name: '', mdesc: '', money: ''}]
       },
       dataRule: {
-        name: [
-            { required: true, message: '应用名不能为空', trigger: 'blur' }
-        ],
         mdesc: [
             { required: true, message: '描述不能为空', trigger: 'blur' }
         ],
@@ -73,9 +69,7 @@ export default {
           method: 'get'
         })
           .then(res => {
-            console.log(res)
             this.$set(this, 'dataForm', res.data.res.data)
-            console.log(this.dataForm.merchantCommodities)
             if (this.dataForm.merchantCommodities.length === 0) {
               this.dataForm.merchantCommodities.push({
                 name: '',
@@ -83,7 +77,6 @@ export default {
                 money: ''
               })
             }
-            // this.$set(this, 'MerchantCommodity', res.data.res.data.merchantCommodities)
           })
       }
     },
@@ -109,7 +102,7 @@ export default {
             method: 'post',
             data: JSON.stringify({
               'merchantId': this.dataForm.id,
-              'commodities': this.MerchantCommodity
+              'commodities': this.dataForm.merchantCommodities
             })
           }).then(({data}) => {
             if (data && data.code === '200') {
@@ -129,14 +122,6 @@ export default {
         }
       })
     }
-    // close () {
-    //   this.$set(this, 'MerchantCommodity', {
-    //     mdesc: '',
-    //     name: '',
-    //     money: ''
-    //     // MerchantCommodity: [{name: '', mdesc: '', money: ''}]
-    //   })
-    // }
   }
 }
 </script>
